@@ -1,19 +1,27 @@
 pipeline {
-    agent any
-
+    agent none
     stages {
-        stage('Hello') {
+        stage('Example Build') {
+            agent { docker 'maven:3.9.3-eclipse-temurin-17' }
             steps {
-                echo "L'id du build est ${BUILD_ID}"
-                // echo "Le GIT_COMMITTER_EMAIL est ${GIT_COMMITTER_EMAIL}"
-                // echo "Le GIT_AUTHOR_EMAIL est ${GIT_AUTHOR_EMAIL}"
-                echo "Le JENKINS_URL est ${JENKINS_URL}"
-                echo "Le JENKINS_HOME est ${JENKINS_HOME}"
-                echo "Le WORKSPACE est ${WORKSPACE}"
-                echo "Le WORKSPACE_TMP est ${WORKSPACE_TMP}"
-                echo "Le NODE_NAME est ${NODE_NAME}"
-                echo "Le JOB_NAME est ${JOB_NAME}"
+                echo 'Hello, Maven'
+                sh 'mvn --version'
             }
+        }
+        stage('Example Test') {
+            agent { docker 'openjdk:17-jre' }
+            steps {
+                echo 'Hello, JDK'
+                sh 'java -version'
+            }
+        }
+    }
+    post {
+        always {
+            echo 'Cette étape sera toujours exécutée'
+        }
+        success {
+            echo 'Cette étape sera exécutée en cas de succès'
         }
     }
 }
