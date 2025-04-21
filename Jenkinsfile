@@ -1,27 +1,13 @@
 pipeline {
-    agent none
+    agent any
     stages {
-        stage('Example Build') {
-            agent { docker 'maven:3.9.3-eclipse-temurin-17' }
-            steps {
-                echo 'Hello, Maven'
-                sh 'mvn --version'
+        stage('Example') {
+            options {
+                timeout(time: 1, unit: 'HOURS')
             }
-        }
-        stage('Example Test') {
-            agent { docker 'openjdk' }
             steps {
-                echo 'Hello, JDK'
-                sh 'java -version'
+                echo 'Hello World'
             }
-        }
-    }
-    post {
-        always {
-            echo 'Cette étape sera toujours exécutée'
-        }
-        success {
-            echo 'Cette étape sera exécutée en cas de succès'
         }
     }
 }
