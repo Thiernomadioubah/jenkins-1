@@ -1,12 +1,10 @@
 pipeline {
     agent any
-    environment {
-        DEPLOY_TO = "development"
+    
+    parameters {
+        booleanParam(name: 'INCLUDE_PROD_TESTS', defaultValue: false, description: "verification de l'inclusin des tests")
     }
 
-    parameters {
-        booleanParam(name: 'INCLUDE_PROD_TESTS', defaultValue: true, description: "verification de l'inclusin des tests")
-    }
     stages {
         stage('Build') {
             steps {
@@ -14,8 +12,13 @@ pipeline {
             }
         }
         stage('Test - Dev Environment') {
+            environment {
+                DEPLOY_TO = "development"
+            }
+
             when {
                 environment name: 'DEPLOY_TO', value: 'development'
+                 expression { return params.INCLUDE_PROD_TESTS }
             }
             steps {
                 echo 'Testing in dev environment...'
