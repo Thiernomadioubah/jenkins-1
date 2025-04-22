@@ -1,8 +1,12 @@
 pipeline {
     agent none
+    environment {
+        DEPLOY_TO = "production"
+    }
     stages {
         stage('Déploiement') {
-            agent { label 'my-label' }
+            // agent { label 'my-label' }
+            agent any
             when {
                 beforeAgent true
                 environment name: 'DEPLOY_TO', value: 'production'
