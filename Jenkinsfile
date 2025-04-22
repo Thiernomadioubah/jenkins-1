@@ -18,7 +18,7 @@ pipeline {
 
             when {
                 environment name: 'DEPLOY_TO', value: 'development'
-                 expression { return params.INCLUDE_PROD_TESTS }
+                expression { return params.INCLUDE_PROD_TESTS }
             }
             steps {
                 echo 'Testing in dev environment...'
@@ -41,7 +41,7 @@ pipeline {
         stage('Deploy') {
             when {
                 not {
-                    triggeredBy cause: "UserIdCause", detail: "jdoe"
+                    triggeredBy cause: "UserIdCause", detail: "thierno"
                 }
             }
             steps {
