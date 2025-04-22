@@ -1,22 +1,44 @@
 pipeline {
-    agent none
-    environment {
-        DEPLOY_TO = "production"
-    }
+    agent any
     stages {
         stage('Déploiement') {
-            // agent { label 'my-label' }
-            agent any
             when {
-                beforeAgent true
-                environment name: 'DEPLOY_TO', value: 'production'
+                beforeInput true
+                branch 'master'
+            }
+            input {
+                message "Déployer en production ?"
+                id "input-deploiement"
             }
             steps {
+                echo 'Déploiement en cours'
                 echo 'Déploiement en cours'
             }
         }
     }
 }
+
+
+
+// pipeline {
+//     agent none
+//     environment {
+//         DEPLOY_TO = "production"
+//     }
+//     stages {
+//         stage('Déploiement') {
+//             // agent { label 'my-label' }
+//             agent any
+//             when {
+//                 beforeAgent true
+//                 environment name: 'DEPLOY_TO', value: 'production'
+//             }
+//             steps {
+//                 echo 'Déploiement en cours'
+//             }
+//         }
+//     }
+// }
 
 
 
