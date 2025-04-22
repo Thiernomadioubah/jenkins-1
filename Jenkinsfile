@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     parameters {
-        booleanParam(name: 'INCLUDE_PROD_TESTS', defaultValue: true, description: "verification de l'inclusin des tests")
+        booleanParam(name: 'INCLUDE_PROD_TESTS', defaultValue: false, description: "verification de l'inclusin des tests")
     }
 
     stages {
@@ -27,12 +27,12 @@ pipeline {
         }
         stage('Test - Prod Environment') {
              environment {
-                DEPLOY_TO = "production"
+                DEPLOY_T = "production"
             }
             when {
                 allOf {
-                    environment name: 'DEPLOY_TO', value: 'production';
-                    // equals expected: true, actual: params.INCLUDE_PROD_TESTS
+                    environment name: 'DEPLOY_T', value: 'production';
+                    equals expected: true, actual: params.INCLUDE_PROD_TESTS
                 }
             }
             steps {
