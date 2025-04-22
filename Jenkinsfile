@@ -31,7 +31,7 @@ pipeline {
             when {
                 allOf {
                     environment name: 'DEPLOY_TO', value: 'production'
-                    expression { return params.INCLUDE_PROD_TESTS }
+                    equals expected: true, actual: params.INCLUDE_PROD_TESTS
                 }
             }
             steps {
