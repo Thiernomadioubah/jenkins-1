@@ -1,27 +1,51 @@
 pipeline {
-    agent any
+    agent none
     stages {
-        stage('Build et Test') {
-            steps {
-                echo 'Build et Test'
-            }
-        }
-        stage('Déploiement en Production') {
-            input {
-                message "Voulez-vous déployer en production ?"
-                ok "Oui, déployons."
-                submitter "admin,devops"
-                submitterParameter "USER_SUBMIT"
-                parameters {
-                    string(name: 'VERSION', defaultValue: 'latest', description: 'Quelle version souhaitez-vous déployer ?')
-                }
+        stage('Déploiement') {
+            agent { label 'my-label' }
+            when {
+                beforeAgent true
+                environment name: 'DEPLOY_TO', value: 'production'
             }
             steps {
-                echo "Déploiement de la version ${VERSION} en production."
-                echo "user : ${USER_SUBMIT}"
-                echo "version : ${VERSION}"
-                // Votre code pour le déploiement
+                echo 'Déploiement en cours'
             }
         }
     }
 }
+
+
+
+
+
+
+
+
+
+// pipeline {
+//     agent any
+//     stages {
+//         stage('Build et Test') {
+//             steps {
+//                 echo 'Build et Test'
+//             }
+//         }
+//         stage('Déploiement en Production') {
+//             input {
+//                 message "Voulez-vous déployer en production ?"
+//                 ok "Oui, déployons."
+//                 submitter "admin,devops"
+//                 submitterParameter "USER_SUBMIT"
+//                 parameters {
+//                     string(name: 'VERSION', defaultValue: 'latest', description: 'Quelle version souhaitez-vous déployer ?')
+//                 }
+//             }
+//             steps {
+//                 echo "Déploiement de la version ${VERSION} en production."
+//                 echo "user : ${USER_SUBMIT}"
+//                 echo "version : ${VERSION}"
+//                 // Votre code pour le déploiement
+//             }
+//         }
+//     }
+// }
