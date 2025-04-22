@@ -16,7 +16,7 @@ pipeline {
                 DEPLOY_TO = "development"
             }
             when {
-                anyof{
+                anyOf{
                     environment name: 'DEPLOY_TO', value: 'development';
                     expression { return params.INCLUDE_PROD_TESTS }
                 }
