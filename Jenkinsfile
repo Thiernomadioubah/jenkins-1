@@ -1,26 +1,23 @@
-// pipeline {
-//     agent any
-//     triggers {
-//         cron('* * * * *')
-//     }
-//     stages {
-//         stage('exemple') {
-//             steps {
-//                 echo 'Bonjour le monde'
-//             }
-//         }
-//     }
-// }
-
 pipeline {
     agent any
-    triggers {
-        pollSCM('* * * * 1-5')
-    }
     stages {
-        stage('exemple') {
+        stage('Build et Test') {
             steps {
-                echo 'Bonjour le monde'
+                echo 'Build et Test'
+            }
+        }
+        stage('Déploiement en Production') {
+            input {
+                message "Voulez-vous déployer en production ?"
+                ok "Oui, déployons."
+                submitter "admin,devops"
+                parameters {
+                    string(name: 'VERSION', defaultValue: 'latest', description: 'Quelle version souhaitez-vous déployer ?')
+                }
+            }
+            steps {
+                echo "Déploiement de la version ${VERSION} en production."
+                // Votre code pour le déploiement
             }
         }
     }
