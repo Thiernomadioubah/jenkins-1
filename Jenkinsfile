@@ -32,7 +32,7 @@ pipeline {
             when {
                 allOf {
                     environment name: 'DEPLOY_TO', value: 'production';
-                    equals expected: true, actual: params.INCLUDE_PROD_TESTS
+                    // equals expected: true, actual: params.INCLUDE_PROD_TESTS
                 }
             }
             steps {
@@ -42,7 +42,7 @@ pipeline {
         stage('Deploy') {
             when {
                 not {
-                    triggeredBy cause: "UserIdCause", detail: "thierno"
+                    triggeredBy cause: "UserIdCause", detail: "joe"
                 }
             }
             steps {
