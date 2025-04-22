@@ -1,22 +1,73 @@
 pipeline {
     agent any
+    environment {
+        DEPLOY_TO = "development"
+    }
+
+    parameters {
+        booleanParam(name: 'INCLUDE_PROD_TESTS', defaultValue: true, description: "verification de l'inclusin des tests")
+    }
     stages {
-        stage('Déploiement') {
-            when {
-                beforeInput true
-                branch 'main'
+        stage('Build') {
+            steps {
+                echo 'Building...'
             }
-            input {
-                message "Déployer en production ?"
-                id "input-deploiement"
+        }
+        stage('Test - Dev Environment') {
+            when {
+                environment name: 'DEPLOY_TO', value: 'development'
             }
             steps {
-                echo 'Déploiement en cours'
-                echo 'Déploiement en cours'
+                echo 'Testing in dev environment...'
+            }
+        }
+        stage('Test - Prod Environment') {
+             environment {
+                DEPLOY_TO = "production"
+            }
+            when {
+                allOf {
+                    environment name: 'DEPLOY_TO', value: 'production'
+                    expression { return params.INCLUDE_PROD_TESTS }
+                }
+            }
+            steps {
+                echo 'Testing in prod environment...'
+            }
+        }
+        stage('Deploy') {
+            when {
+                not {
+                    triggeredBy cause: "UserIdCause", detail: "jdoe"
+                }
+            }
+            steps {
+                echo 'Deploying...'
             }
         }
     }
 }
+
+
+// pipeline {
+//     agent any
+//     stages {
+//         stage('Déploiement') {
+//             when {
+//                 beforeInput true
+//                 branch 'main'
+//             }
+//             input {
+//                 message "Déployer en production ?"
+//                 id "input-deploiement"
+//             }
+//             steps {
+//                 echo 'Déploiement en cours'
+//                 echo 'Déploiement en cours'
+//             }
+//         }
+//     }
+// }
 
 
 
