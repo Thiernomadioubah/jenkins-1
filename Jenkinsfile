@@ -11,12 +11,15 @@ pipeline {
                 message "Voulez-vous déployer en production ?"
                 ok "Oui, déployons."
                 submitter "admin,devops"
+                submitterParameter "USER_SUBMIT"
                 parameters {
                     string(name: 'VERSION', defaultValue: 'latest', description: 'Quelle version souhaitez-vous déployer ?')
                 }
             }
             steps {
                 echo "Déploiement de la version ${VERSION} en production."
+                echo "user : ${USER_SUBMIT}"
+                echo "version : ${VERSION}"
                 // Votre code pour le déploiement
             }
         }
