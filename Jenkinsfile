@@ -17,10 +17,10 @@ pipeline {
             //     DEPLOY_TO = "development"
             // }
             when {
-                anyOf{
+                allOf{
                     // environment name: 'DEPLOY_TO', value: 'development';
                     equals expected: 'dev', actual: params.CHOICES;
-                    equals expected: 'deux', actual: params.CHOICES;
+                    // equals expected: 'deux', actual: params.CHOICES;
                     expression { return params.INCLUDE_PROD_TESTS }
                 }
             }
