@@ -20,7 +20,7 @@ pipeline {
                 anyOf{
                     // environment name: 'DEPLOY_TO', value: 'development';
                     equals expected: 'dev' || 'deux', actual: params.CHOICES
-                    expression { return params.INCLUDE_PROD_TESTS }
+                    // expression { return params.INCLUDE_PROD_TESTS }
                 }
             }
             steps {
