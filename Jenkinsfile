@@ -3,6 +3,7 @@ pipeline {
     
     parameters {
         booleanParam(name: 'INCLUDE_PROD_TESTS', defaultValue: false, description: "verification de l'inclusin des tests")
+        choice(name: 'CHOICES', choices: ['dev', 'prod', 'deux'], description: 'environnement')
     }
 
     stages {
@@ -12,12 +13,13 @@ pipeline {
             }
         }
         stage('Test - Dev Environment') {
-            environment {
-                DEPLOY_TO = "development"
-            }
+            // environment {
+            //     DEPLOY_TO = "development"
+            // }
             when {
                 anyOf{
-                    environment name: 'DEPLOY_TO', value: 'development';
+                    // environment name: 'DEPLOY_TO', value: 'development';
+                    equals expected: 'dev' || 'deux', actual: params.CHOICES
                     expression { return params.INCLUDE_PROD_TESTS }
                 }
             }
@@ -26,13 +28,14 @@ pipeline {
             }
         }
         stage('Test - Prod Environment') {
-             environment {
-                DEPLOY_T = "production"
-            }
+            //  environment {
+            //     DEPLOY_T = "production"
+            // }
             when {
                 allOf {
-                    environment name: 'DEPLOY_T', value: 'production';
-                    equals expected: true, actual: params.INCLUDE_PROD_TESTS
+                    // environment name: 'DEPLOY_TO', value: 'production';
+                    equals expected: 'prod' || 'deux', actual: params.CHOICES
+                    expression { return params.INCLUDE_PROD_TESTS }
                 }
             }
             steps {
