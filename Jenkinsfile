@@ -32,7 +32,7 @@ pipeline {
             //     DEPLOY_T = "production"
             // }
             when {
-                allOf {
+                anyOf {
                     // environment name: 'DEPLOY_TO', value: 'production';
                     // equals expected: 'prod' || 'deux', actual: params.CHOICES;
                     // expression { return params.INCLUDE_PROD_TESTS }
