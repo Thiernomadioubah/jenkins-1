@@ -34,7 +34,7 @@ pipeline {
             when {
                 anyOf {
                     // environment name: 'DEPLOY_TO', value: 'production';
-                    // equals expected: 'prod' || 'deux', actual: params.CHOICES;
+                    equals expected: 'prod' || 'deux', actual: params.CHOICES;
                     // expression { return params.INCLUDE_PROD_TESTS }
                     equals expected: true, actual: params.INCLUDE_PROD_TESTS
                 }
