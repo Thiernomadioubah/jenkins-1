@@ -1,62 +1,99 @@
 pipeline {
     agent any
-    
-    parameters {
-        booleanParam(name: 'INCLUDE_PROD_TESTS', defaultValue: false, description: "verification de l'inclusin des tests")
-        choice(name: 'CHOICES', choices: ['dev', 'prod', 'deux'], description: 'environnement')
-    }
-
     stages {
-        stage('Build') {
-            steps {
-                echo 'Building...'
-            }
-        }
-        stage('Test - Dev Environment') {
-            // environment {
-            //     DEPLOY_TO = "development"
-            // }
-            when {
-                allOf{
-                    // environment name: 'DEPLOY_TO', value: 'development';
-                    equals expected: 'dev', actual: params.CHOICES;
-                    // equals expected: 'deux', actual: params.CHOICES;
-                    expression { return params.INCLUDE_PROD_TESTS }
+        stage('BuildAndTest') {
+            matrix {
+                agent {
+                    label "${PLATFORM}-agent"
                 }
-            }
-            steps {
-                echo 'Testing in dev environment...'
-            }
-        }
-        stage('Test - Prod Environment') {
-            //  environment {
-            //     DEPLOY_T = "production"
-            // }
-            when {
-                anyOf {
-                    // environment name: 'DEPLOY_TO', value: 'production';
-                    equals expected: 'prod', actual: params.CHOICES;
-                    equals expected: 'deux', actual: params.CHOICES;
-                    // expression { return params.INCLUDE_PROD_TESTS }
-                    equals expected: true, actual: params.INCLUDE_PROD_TESTS
+                axes {
+                    axis {
+                        name 'PLATFORM'
+                        values 'linux', 'windows', 'mac'
+                    }
+                    axis {
+                        name 'BROWSER'
+                        values 'firefox', 'chrome', 'safari', 'edge'
+                    }
                 }
-            }
-            steps {
-                echo 'Testing in prod environment...'
-            }
-        }
-        stage('Deploy') {
-            when {
-                not {
-                    triggeredBy cause: "UserIdCause", detail: "joe"
+                stages {
+                    stage('Build') {
+                        steps {
+                            echo "construire pour ${PLATFORM} - ${BROWSER}"
+                        }
+                    }
+                    stage('Test') {
+                        steps {
+                            echo "tester pour ${PLATFORM} - ${BROWSER}"
+                        }
+                    }
                 }
-            }
-            steps {
-                echo 'Deploying...'
             }
         }
     }
 }
+
+
+
+// pipeline {
+//     agent any
+    
+//     parameters {
+//         booleanParam(name: 'INCLUDE_PROD_TESTS', defaultValue: false, description: "verification de l'inclusin des tests")
+//         choice(name: 'CHOICES', choices: ['dev', 'prod', 'deux'], description: 'environnement')
+//     }
+
+//     stages {
+//         stage('Build') {
+//             steps {
+//                 echo 'Building...'
+//             }
+//         }
+//         stage('Test - Dev Environment') {
+            // environment {
+            //     DEPLOY_TO = "development"
+            // }
+//             when {
+//                 allOf{
+//                     // environment name: 'DEPLOY_TO', value: 'development';
+//                     equals expected: 'dev', actual: params.CHOICES;
+//                     // equals expected: 'deux', actual: params.CHOICES;
+//                     expression { return params.INCLUDE_PROD_TESTS }
+//                 }
+//             }
+//             steps {
+//                 echo 'Testing in dev environment...'
+//             }
+//         }
+//         stage('Test - Prod Environment') {
+//             //  environment {
+//             //     DEPLOY_T = "production"
+//             // }
+//             when {
+//                 anyOf {
+//                     // environment name: 'DEPLOY_TO', value: 'production';
+//                     equals expected: 'prod', actual: params.CHOICES;
+//                     equals expected: 'deux', actual: params.CHOICES;
+//                     // expression { return params.INCLUDE_PROD_TESTS }
+//                     equals expected: true, actual: params.INCLUDE_PROD_TESTS
+//                 }
+//             }
+//             steps {
+//                 echo 'Testing in prod environment...'
+//             }
+//         }
+//         stage('Deploy') {
+//             when {
+//                 not {
+//                     triggeredBy cause: "UserIdCause", detail: "joe"
+//                 }
+//             }
+//             steps {
+//                 echo 'Deploying...'
+//             }
+//         }
+//     }
+// }
 
 
 // pipeline {
