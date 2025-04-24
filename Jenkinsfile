@@ -3,9 +3,9 @@ pipeline {
     stages {
         stage('BuildAndTest') {
             matrix {
-                agent {
-                    label "${PLATFORM}-agent"
-                }
+                // agent {
+                //     label "${PLATFORM}-agent"
+                // }
                 axes {
                     axis {
                         name 'PLATFORM'
