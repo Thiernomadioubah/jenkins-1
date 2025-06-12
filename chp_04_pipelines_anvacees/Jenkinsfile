@@ -1,26 +1,38 @@
 pipeline {
     agent any
     stages {
-        stage('Build et Test') {
+        stage('Build') {
             steps {
-                echo 'Build et Test'
+                echo 'Building...'
             }
         }
-        stage('Déploiement en Production') {
-            input {
-                message "Voulez-vous déployer en production ?"
-                ok "Oui, déployons."
-                submitter "admin,devops"
-                submitterParameter 'USER_SUBMIT'
-                parameters {
-                    string(name: 'VERSION', defaultValue: 'latest', description: 'Quelle version souhaitez-vous déployer ?')
+        stage('Test - Dev Environment') {
+            when {
+                environment name: 'DEPLOY_TO', value: 'development'
+            }
+            steps {
+                echo 'Testing in dev environment...'
+            }
+        }
+        stage('Test - Prod Environment') {
+            when {
+                allOf {
+                    environment name: 'DEPLOY_TO', value: 'production'
+                    expression { return params.INCLUDE_PROD_TESTS }
                 }
             }
             steps {
-                echo "Déploiement de la version ${VERSION} en production."
-                echo "${USER_SUBMIT}"
-                echo "{VERSION}"
-                // Votre code pour le déploiement
+                echo 'Testing in prod environment...'
+            }
+        }
+        stage('Deploy') {
+            when {
+                not {
+                    triggeredBy cause: "UserIdCause", detail: "jdoe"
+                }
+            }
+            steps {
+                echo 'Deploying...'
             }
         }
     }
