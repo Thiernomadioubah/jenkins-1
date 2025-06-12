@@ -24,7 +24,7 @@ pipeline {
                     environment name: 'DEPLOY_TO', value: 'production'
                     // expression { return params.INCLUDE_PROD_TESTS }
                     // expression { params.DEBUG_BUILD }
-                    equals expected: true, actual: params.DEBUG_BUILD
+                    // equals expected: true, actual: params.DEBUG_BUILD
                 }
             }
             steps {
