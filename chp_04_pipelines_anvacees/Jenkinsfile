@@ -1,48 +1,25 @@
 pipeline {
-    agent any
-    environment { 
-        DEPLOY_TO='development'
-        DEPLOY_TO_2='production'}
-    parameters {
-        booleanParam(name: 'DEBUG_BUILD', defaultValue: false, description: 'test boolean')
-        // text(name: 'BIOGRAPHIE', defaultValue: '', description: 'Entrez des informations sur la personne')
-        // choice(name: 'CHOIX', choices: ['Un', 'Deux', 'Trois'], description: 'Faites un choix')
-    }
+    agent none
     stages {
-        stage('Build') {
+        stage('Build et Test') {
+            agent { label 'build' }
             steps {
-                echo 'Building...'
+                echo "Construire et tester l'application."
             }
         }
-        stage('Test - Dev Environment') {
-            when {
-                environment name: 'DEPLOY_TO', value: 'development'
-            }
-            steps {
-                echo 'Testing in dev environment...'
-            }
-        }
-        stage('Test - Prod Environment') {
-            when {
-                allOf {
-                    environment name: 'DEPLOY_TO_2', value: 'production'
-                    // expression { return params.INCLUDE_PROD_TESTS }
-                    // expression { params.DEBUG_BUILD }
-                    equals expected: true, actual: params.DEBUG_BUILD
+        stage('Déploiement séquentiel') {
+            agent { label 'deploy' }
+            stages {
+                stage('Déploiement Dev') {
+                    steps {
+                        echo "Déploiement en environnement de développement."
+                    }
                 }
-            }
-            steps {
-                echo 'Testing in prod environment...'
-            }
-        }
-        stage('Deploy') {
-            when {
-                not {
-                    triggeredBy cause: "UserIdCause", detail: "jdoe"
+                stage('Déploiement Staging') {
+                    steps {
+                        echo "Déploiement en environnement de préproduction."
+                    }
                 }
-            }
-            steps {
-                echo 'Deploying...'
             }
         }
     }
