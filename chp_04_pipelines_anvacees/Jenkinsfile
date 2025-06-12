@@ -1,45 +1,20 @@
 pipeline {
-    agent any //none
+    agent any
+
     stages {
-        stage('BuildAndTest') {
-            matrix {
-                // agent {
-                //     label "${PLATFORM}-agent"
-                // }
-                axes {
-                    axis {
-                        name 'PLATFORM'
-                        values 'linux', 'windows', 'mac'
-                    }
-                    axis {
-                        name 'BROWSER'
-                        values 'firefox', 'chrome', 'safari', 'edge'
-                    }
-                }
-                excludes {
-                        exclude {
-                            axis {
-                                name 'PLATFORM'
-                                values 'linux', 'chorme'
-                            }
-                            axis {
-                                name 'BROWSER'
-                                values 'safari', 'edge'
-                            }
-                        }
-                }
-                stages {
-                    stage('Build') {
-                        steps {
-                            echo "construire pour ${PLATFORM} - ${BROWSER}"
-                        }
-                    }
-                    stage('Test') {
-                        steps {
-                            echo "tester pour ${PLATFORM} - ${BROWSER}"
-                        }
-                    }
-                }
+        stage('Build') {
+            steps {
+                // Commandes pour construire l'application, par exemple avec Maven
+                sh 'echo hello > hello.txt'
+            }
+        }
+
+        stage('Archive Artifacts') {
+            steps {
+                // Archivage des fichiers .jar ou .war générés dans le dossier 'target'
+                archiveArtifacts artifacts: '*.txt', allowEmptyArchive: true
+                // archiveArtifacts(artifacts: '*.txt', allowEmptyArchive: true)
+
             }
         }
     }
