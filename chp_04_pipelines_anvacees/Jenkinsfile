@@ -1,14 +1,14 @@
 pipeline {
-    agent none
+    agent any //none
     stages {
         stage('Build et Test') {
-            agent { label 'build' }
+            // agent { label 'build' }
             steps {
                 echo "Construire et tester l'application."
             }
         }
         stage('Déploiement séquentiel') {
-            agent { label 'deploy' }
+            // agent { label 'deploy' }
             stages {
                 stage('Déploiement Dev') {
                     steps {
