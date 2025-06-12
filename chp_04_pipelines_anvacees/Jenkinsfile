@@ -1,6 +1,9 @@
 pipeline {
     agent any
     environment { DEPLOY_TO='development'}
+    parameters {
+        booleaParam(name: 'DEBUG_BUILD', defaultValue: false, description: 'test boolean')
+    }
     stages {
         stage('Build') {
             steps {
