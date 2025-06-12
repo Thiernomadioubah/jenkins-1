@@ -15,7 +15,8 @@ pipeline {
                         name 'BROWSER'
                         values 'firefox', 'chrome', 'safari', 'edge'
                     }
-                    excludes {
+                }
+                excludes {
                         exclude {
                             axis {
                                 name 'PLATFORM'
@@ -26,7 +27,6 @@ pipeline {
                                 values 'safari', 'edge'
                             }
                         }
-                    }
                 }
                 stages {
                     stage('Build') {
