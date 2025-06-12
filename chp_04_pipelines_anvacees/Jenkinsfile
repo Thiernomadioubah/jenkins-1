@@ -3,6 +3,7 @@ pipeline {
 
     tools{
         nodejs 'node24'
+        docker 'dockertest'
     }
 
     stages {
@@ -10,6 +11,7 @@ pipeline {
             steps {
                 // Commandes pour construire l'application, par exemple avec Maven
                 sh 'node -v'
+                sh 'docker -v'
             }
         }
     }
