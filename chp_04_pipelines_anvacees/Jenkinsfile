@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    environment { name: 'DEPLOY_TO', value: 'development'}
+    environment { DEPLOY_TO='development'}
     stages {
         stage('Build') {
             steps {
