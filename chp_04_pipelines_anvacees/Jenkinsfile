@@ -19,11 +19,11 @@ pipeline {
                         exclude {
                             axis {
                                 name 'PLATFORM'
-                                values 'linux', "chorme"
+                                values 'linux', 'chorme'
                             }
                             axis {
                                 name 'BROWSER'
-                                values 'safari', "edge"
+                                values 'safari', 'edge'
                             }
                         }
                     }
