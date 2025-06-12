@@ -1,50 +1,31 @@
-// pipeline {
-//     agent any //none
-//     stages {
-//         stage('Build et Test') {
-//             // agent { label 'build' }
-//             steps {
-//                 echo "Construire et tester l'application."
-//             }
-//         }
-//         stage('Déploiement séquentiel') {
-//             // agent { label 'deploy' }
-//             stages {
-//                 stage('Déploiement Dev') {
-//                     steps {
-//                         echo "Déploiement en environnement de développement."
-//                     }
-//                 }
-//                 stage('Déploiement Staging') {
-//                     steps {
-//                         echo "Déploiement en environnement de préproduction."
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// }
-
-// ------------ test execution parallel
 pipeline {
-    agent any
+    agent any //none
     stages {
-        stage('Build et Test') {
-            steps {
-                echo "Construire et tester l'application."
-            }
-        }
-        stage('Déploiement parallèle') {
-            failFast true
-            parallel {
-                stage('Déploiement Dev') {
-                    steps {
-                        echo "Déploiement en environnement de développement."
+        stage('BuildAndTest') {
+            matrix {
+                // agent {
+                //     label "${PLATFORM}-agent"
+                // }
+                axes {
+                    axis {
+                        name 'PLATFORM'
+                        values 'linux', 'windows', 'mac'
+                    }
+                    axis {
+                        name 'BROWSER'
+                        values 'firefox', 'chrome', 'safari', 'edge'
                     }
                 }
-                stage('Déploiement Staging') {
-                    steps {
-                        echo "Déploiement en environnement de préproduction."
+                stages {
+                    stage('Build') {
+                        steps {
+                            echo "construire pour ${PLATFORM} - ${BROWSER}"
+                        }
+                    }
+                    stage('Test') {
+                        steps {
+                            echo "tester pour ${PLATFORM} - ${BROWSER}"
+                        }
                     }
                 }
             }
