@@ -11,7 +11,7 @@ pipeline {
                 message "Voulez-vous déployer en production ?"
                 ok "Oui, déployons."
                 submitter "admin,devops"
-                submitterParameter: 'USER_SUBMIT'
+                submitterParameter 'USER_SUBMIT'
                 parameters {
                     string(name: 'VERSION', defaultValue: 'latest', description: 'Quelle version souhaitez-vous déployer ?')
                 }
