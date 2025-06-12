@@ -1,15 +1,42 @@
+// pipeline {
+//     agent any //none
+//     stages {
+//         stage('Build et Test') {
+//             // agent { label 'build' }
+//             steps {
+//                 echo "Construire et tester l'application."
+//             }
+//         }
+//         stage('Déploiement séquentiel') {
+//             // agent { label 'deploy' }
+//             stages {
+//                 stage('Déploiement Dev') {
+//                     steps {
+//                         echo "Déploiement en environnement de développement."
+//                     }
+//                 }
+//                 stage('Déploiement Staging') {
+//                     steps {
+//                         echo "Déploiement en environnement de préproduction."
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
+
+// ------------ test execution parallel
 pipeline {
-    agent any //none
+    agent any
     stages {
         stage('Build et Test') {
-            // agent { label 'build' }
             steps {
                 echo "Construire et tester l'application."
             }
         }
-        stage('Déploiement séquentiel') {
-            // agent { label 'deploy' }
-            stages {
+        stage('Déploiement parallèle') {
+            failFast true
+            parallel {
                 stage('Déploiement Dev') {
                     steps {
                         echo "Déploiement en environnement de développement."
