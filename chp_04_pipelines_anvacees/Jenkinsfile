@@ -1,8 +1,12 @@
 pipeline {
     agent any
-    environment { DEPLOY_TO='development'}
+    environment { 
+        DEPLOY_TO='development'
+        DEPLOY_TO_2='production'}
     parameters {
         booleanParam(name: 'DEBUG_BUILD', defaultValue: false, description: 'test boolean')
+        // text(name: 'BIOGRAPHIE', defaultValue: '', description: 'Entrez des informations sur la personne')
+        // choice(name: 'CHOIX', choices: ['Un', 'Deux', 'Trois'], description: 'Faites un choix')
     }
     stages {
         stage('Build') {
@@ -21,10 +25,10 @@ pipeline {
         stage('Test - Prod Environment') {
             when {
                 allOf {
-                    environment name: 'DEPLOY_TO', value: 'production'
+                    environment name: 'DEPLOY_TO_2', value: 'production'
                     // expression { return params.INCLUDE_PROD_TESTS }
                     // expression { params.DEBUG_BUILD }
-                    // equals expected: true, actual: params.DEBUG_BUILD
+                    equals expected: true, actual: params.DEBUG_BUILD
                 }
             }
             steps {
