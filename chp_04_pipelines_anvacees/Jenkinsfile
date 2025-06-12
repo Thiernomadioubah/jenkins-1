@@ -1,20 +1,15 @@
 pipeline {
     agent any
 
+    tools{
+        node 'node24'
+    }
+
     stages {
         stage('Build') {
             steps {
                 // Commandes pour construire l'application, par exemple avec Maven
-                sh 'echo hello > hello.txt'
-            }
-        }
-
-        stage('Archive Artifacts') {
-            steps {
-                // Archivage des fichiers .jar ou .war générés dans le dossier 'target'
-                archiveArtifacts artifacts: '*.txt', allowEmptyArchive: true
-                // archiveArtifacts(artifacts: '*.txt', allowEmptyArchive: true)
-
+                sh 'node -v'
             }
         }
     }
