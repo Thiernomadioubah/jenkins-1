@@ -1,20 +1,27 @@
 pipeline {
-    agent any
-    environment {
-        CC = 'clang'
-    }
+    agent none
     stages {
-        stage('Exemple') {
-            environment {
-                DEBUG_FLAGS = '-g'
-            }
+        stage('Example Build') {
+            agent { docker 'maven:3.9.3-eclipse-temurin-17' }
             steps {
-                echo "Hello world"
-                echo "L'id du build est ${BUILD_ID}"
-                echo "L'URL du build est ${BUILD_URL}"
-                echo "Exécution du build ${env.BUILD_ID} sur ${env.JENKINS_URl}"
-                sh 'printenv'
+                echo 'Hello, Maven'
+                sh 'mvn --version'
             }
+        }
+        stage('Example Test') {
+            agent { docker 'openjdk:17-jre' }
+            steps {
+                echo 'Hello, JDK'
+                sh 'java -version'
+            }
+        }
+    }
+    post {
+        always {
+            echo 'Cette étape sera toujours exécutée'
+        }
+        success {
+            echo 'Cette étape sera exécutée en cas de succès'
         }
     }
 }

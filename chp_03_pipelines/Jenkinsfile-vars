@@ -1,0 +1,20 @@
+pipeline {
+    agent any
+    environment {
+        CC = 'clang'
+    }
+    stages {
+        stage('Exemple') {
+            environment {
+                DEBUG_FLAGS = '-g'
+            }
+            steps {
+                echo "Hello world"
+                echo "L'id du build est ${BUILD_ID}"
+                echo "L'URL du build est ${BUILD_URL}"
+                echo "Exécution du build ${env.BUILD_ID} sur ${env.JENKINS_URl}"
+                sh 'printenv'
+            }
+        }
+    }
+}
