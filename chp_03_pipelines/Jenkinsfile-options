@@ -1,0 +1,18 @@
+pipeline {
+    agent any
+    // options { 
+    //     disableConcurrentBuilds()
+    //     disableResume()
+    //      }
+    stages {
+        stage('Example') {
+            options {
+                timestamps()
+                timeout(time: 1, unit: 'HOURS')
+            }
+            steps {
+                echo 'Hello World'
+            }
+        }
+    }
+}
