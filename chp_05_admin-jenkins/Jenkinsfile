@@ -26,7 +26,7 @@ pipeline {
         success {
             emailext (
                 subject: "Succès du build : ${currentBuild.fullDisplayName}",
-                cc: "bahthiernomadiou93@gmail.com"
+                cc: "bahthiernomadiou93@gmail.com",
                 body: "Le build ${currentBuild.fullDisplayName} s'est terminé avec succès.",
                 to: 'madiouda130@gmail.com'
             )
