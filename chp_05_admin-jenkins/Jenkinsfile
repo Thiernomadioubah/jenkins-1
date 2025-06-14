@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo 'Récupération du code source...'
+                // Votre code ici
+            }
+        }
+        stage('Build et Test') {
+            steps {
+                echo 'Construction et test...'
+                // Votre code ici
+            }
+        }
+        stage('Déploiement') {
+            steps {
+                echo 'Déploiement...'
+                // Votre code ici
+            }
+        }
+    }
+
+    post {
+        success {
+            emailext (
+                subject: "Succès du build : ${currentBuild.fullDisplayName}",
+                cc: "bahthiernomadiou93@gmail.com"
+                body: "Le build ${currentBuild.fullDisplayName} s'est terminé avec succès.",
+                to: 'madiouda130@gmail.com'
+            )
+        }
+        failure {
+            emailext (
+                subject: "Échec du build : ${currentBuild.fullDisplayName}",
+                body: "Le build ${currentBuild.fullDisplayName} a échoué.",
+                to: 'madiouda130@gmail.com'
+            )
+        }
+    }
+}
